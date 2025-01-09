@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Real Estate Order</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 1em;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Post Property</h1>
+
+        <!-- Property Details Section -->
+        <div class="form-group">
+            <label for="propertyType">Property Type</label>
+            <select id="propertyType">
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="commercial">Commercial Space</option>
+                <option value="land">Land</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="propertyLocation">Location</label>
+            <input type="text" id="propertyLocation" placeholder="Enter property location">
+        </div>
+
+        <div class="form-group">
+            <label for="propertySize">Property Size (sq. ft)</label>
+            <input type="number" id="propertySize" placeholder="Enter property size">
+        </div>
+
+        <div class="form-group">
+            <label for="propertyPrice">Price (in ₹)</label>
+            <input type="number" id="propertyPrice" placeholder="Enter asking price">
+        </div>
+
+        <div class="form-group">
+            <label for="propertyDescription">Description</label>
+            <textarea id="propertyDescription" placeholder="Enter a brief description"></textarea>
+        </div>
+
+        <!-- Contact Details Section -->
+        <h2 style="margin-top: 20px;">Contact Information</h2>
+        <div class="form-group">
+            <label for="contactName">Full Name</label>
+            <input type="text" id="contactName" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+            <label for="contactEmail">Email Address</label>
+            <input type="email" id="contactEmail" placeholder="Enter your email address">
+        </div>
+
+        <div class="form-group">
+            <label for="contactPhone">Phone Number</label>
+            <input type="text" id="contactPhone" placeholder="Enter your contact number">
+        </div>
+
+        <button class="submit-btn" onclick="submitOrder()">Submit Order</button>
+    </div>
+
+    <script>
+        function submitOrder() {
+            const propertyType = document.getElementById('propertyType').value;
+            const location = document.getElementById('propertyLocation').value;
+            const size = document.getElementById('propertySize').value;
+            const price = document.getElementById('propertyPrice').value;
+            const description = document.getElementById('propertyDescription').value;
+            const contactName = document.getElementById('contactName').value;
+            const contactEmail = document.getElementById('contactEmail').value;
+            const contactPhone = document.getElementById('contactPhone').value;
+
+            // Simple validation check
+            if (!location || !size || !price || !contactName || !contactEmail || !contactPhone) {
+                alert('Please fill out all required fields.');
+                return;
+            }
+
+            // For now, just display a confirmation alert
+            alert('Order submitted successfully!');
+        }
+    </script>
+</body>
+</html>

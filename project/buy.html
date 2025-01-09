@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Multi-Floor House Price Prediction (INR)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-image: url('/api/placeholder/1200/300');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .floor-details {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Dream Home Realty</h1>
+    </div>
+
+    <div class="container">
+        <h2>Advanced Multi-Floor House Price Prediction (INR)</h2>
+        <form id="predictionForm">
+            <label for="cityType">City Type:</label>
+            <select id="cityType" required>
+                <option value="rural">Rural</option>
+                <option value="urban">Urban</option>
+                <option value="commercial">Commercial</option>
+            </select>
+
+            <label for="floors">Number of Floors:</label>
+            <input type="number" id="floors" min="1" required>
+
+            <label for="similarFloors">
+                <input type="checkbox" id="similarFloors" checked>
+                All floors similar to ground floor
+            </label>
+
+            <div id="groundFloorDetails" class="floor-details">
+                <h2>Ground Floor Details</h2>
+                <label for="rooms0">Number of Rooms:</label>
+                <input type="number" id="rooms0" required>
+                
+                <label for="kitchen0">Kitchen (1 if present, 0 if not):</label>
+                <input type="number" id="kitchen0" min="0" max="1" required>
+                
+                <label for="livingArea0">Living Area (sq ft):</label>
+                <input type="number" id="livingArea0" required>
+                
+                <label for="dinningArea0">Dining Area (sq ft):</label>
+                <input type="number" id="dinningArea0" required>
+                
+                <label for="poojaRoom0">Pooja Room (1 if present, 0 if not):</label>
+                <input type="number" id="poojaRoom0" min="0" max="1" required>
+                
+                <label for="bathroom0">Number of Bathrooms:</label>
+                <input type="number" id="bathroom0" required>
+
+                <label for="parkingArea">Parking Area (sq ft):</label>
+                <input type="number" id="parkingArea" required>
+            </div>
+
+            <div id="additionalFloors"></div>
+
+            <div id="terraceDetails" class="floor-details">
+                <h2>Terrace Details</h2>
+                <label for="helipad">
+                    <input type="checkbox" id="helipad">
+                    Include Helipad
+                </label>
+            </div>
+            
+            <button type="submit">Predict Price</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <div class="footer">
+        <p>Dealer: John Doe</p>
+        <p>Email: john.doe@dreamhomerealty.com</p>
+        <p>Website: www.dreamhomerealty.com</p>
+        <p>Address: 123 Real Estate Lane, Property City, 12345</p>
+    </div>
+
+    <script>
+        const similarFloorsCheckbox = document.getElementById('similarFloors');
+        const floorsInput = document.getElementById('floors');
+        const additionalFloorsDiv = document.getElementById('additionalFloors');
+
+        function createFloorInputs(floorNumber) {
+            const floorDiv = document.createElement('div');
+            floorDiv.className = 'floor-details';
+            floorDiv.innerHTML = `
+                <h2>Floor ${floorNumber} Details</h2>
+                <label for="rooms${floorNumber}">Number of Rooms:</label>
+                <input type="number" id="rooms${floorNumber}" required>
+                
+                <label for="kitchen${floorNumber}">Kitchen (1 if present, 0 if not):</label>
+                <input type="number" id="kitchen${floorNumber}" min="0" max="1" required>
+                
+                <label for="livingArea${floorNumber}">Living Area (sq ft):</label>
+                <input type="number" id="livingArea${floorNumber}" required>
+                
+                <label for="dinningArea${floorNumber}">Dining Area (sq ft):</label>
+                <input type="number" id="dinningArea${floorNumber}" required>
+                
+                <label for="poojaRoom${floorNumber}">Pooja Room (1 if present, 0 if not):</label>
+                <input type="number" id="poojaRoom${floorNumber}" min="0" max="1" required>
+                
+                <label for="bathroom${floorNumber}">Number of Bathrooms:</label>
+                <input type="number" id="bathroom${floorNumber}" required>
+
+                <label for="balcony${floorNumber}">
+                    <input type="checkbox" id="balcony${floorNumber}">
+                    Include Balcony
+                </label>
+            `;
+            return floorDiv;
+        }
+
+        function updateFloorInputs() {
+            const numFloors = parseInt(floorsInput.value);
+            const isSimilar = similarFloorsCheckbox.checked;
+            additionalFloorsDiv.innerHTML = '';
+
+            if (!isSimilar && numFloors > 1) {
+                for (let i = 1; i < numFloors; i++) {
+                    additionalFloorsDiv.appendChild(createFloorInputs(i));
+                }
+            }
+        }
+
+        similarFloorsCheckbox.addEventListener('change', updateFloorInputs);
+        floorsInput.addEventListener('change', updateFloorInputs);
+
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cityType = document.getElementById('cityType').value;
+            const floors = parseInt(floorsInput.value);
+            const similarFloors = similarFloorsCheckbox.checked;
+            const parkingArea = parseFloat(document.getElementById('parkingArea').value);
+            const hasHelipad = document.getElementById('helipad').checked;
+            
+            const cityMultiplier = {
+                'rural': 1,
+                'urban': 1.5,
+                'commercial': 2
+            };
+
+            let totalPrice = 0;
+
+            function calculateFloorPrice(floorNumber) {
+                const rooms = parseFloat(document.getElementById(`rooms${floorNumber}`).value);
+                const kitchen = parseFloat(document.getElementById(`kitchen${floorNumber}`).value);
+                const livingArea = parseFloat(document.getElementById(`livingArea${floorNumber}`).value);
+                const dinningArea = parseFloat(document.getElementById(`dinningArea${floorNumber}`).value);
+                const poojaRoom = parseFloat(document.getElementById(`poojaRoom${floorNumber}`).value);
+                const bathroom = parseFloat(document.getElementById(`bathroom${floorNumber}`).value);
+                let floorPrice = (rooms * 500000) + (kitchen * 1000000) + (livingArea * 5000) + 
+                                 (dinningArea * 4000) + (poojaRoom * 300000) + (bathroom * 400000);
+
+                if (floorNumber > 0) {
+                    const hasBalcony = document.getElementById(`balcony${floorNumber}`).checked;
+                    if (hasBalcony) {
+                        floorPrice += 200000; // Add 2 lakhs for balcony
+                    }
+                }
+
+                return floorPrice;
+            }
+
+            const groundFloorPrice = calculateFloorPrice(0);
+            totalPrice = groundFloorPrice + (parkingArea * 2000);
+
+            if (similarFloors) {
+                totalPrice += groundFloorPrice * (floors - 1);
+            } else {
+                for (let i = 1; i < floors; i++) {
+                    totalPrice += calculateFloorPrice(i);
+                }
+            }
+
+            if (hasHelipad) {
+                totalPrice += 10000000; // Add 1 crore for helipad
+            }
+
+            const predictedPrice = totalPrice * cityMultiplier[cityType];
+            
+            document.getElementById('result').innerHTML = `Predicted House Price: ₹${predictedPrice.toLocaleString('en-IN')}`;
+        });
+    </script>
+</body>
+</html>
